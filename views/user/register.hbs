@@ -2,38 +2,63 @@
   <div class="row">
     <div class="col-md-12 col-md-offset-12">
         <h1>SignUp</h1>
-        <form method="POST" action"register">
-          <input type='text' name='username' placeholder='Username' value="{{data.username}}"/><br><br>
-          <input type='text' name='email' placeholder='Email' value="{{data.email}}"/><br><br>
-          <input type='password' name='password' placeholder='Password' value="{{data.password}}"/><br><br>
 
-          {{#if referral_id}}
+    {{#if referral_id}}
 
-           <p style="width: 220px; height: 70px; color:white; background: black; border-radius: 40px; display: flex; align-items: center; justify-content: center; padding: 0 70px;">
-             <h7 class="card-title">Referral ID: {{ referral_id }}</h7></p>
-          {{ else}}
+      <form method="POST" action"/register/rl{{ referral_id }}">
+        <input type='text' name='username' placeholder='Username' value="{{data.username}}"/><br><br>
+        <input type='text' name='email' placeholder='Email' value="{{data.email}}"/><br><br>
+        <input type='password' name='password' placeholder='Password' value="{{data.password}}"/><br><br>
+        <p style="width: 220px; height: 70px; color:white; background: black; border-radius: 40px; display: flex; align-items: center; justify-content: center; padding: 0 70px;">
+          <h7 class="card-title">Referral ID: {{ referral_id }}</h7></p>    
+        <button type='submit' class="btn btn-primary pull-right" role="button" >Submit</button>
+      </form>
 
-          <input type='text' name='referral' placeholder='Referral ID(Optional)' /><br><br>
+      {{#if referral_error.referral_error}}
+        <div class="alert alert-success" style="width: 30%;">{{ referral_error.referral_error }}</div>
+      {{/if}}
 
-           {{/if}}
+      {{#if errors.password }}
+        <div class="alert alert-danger" style="width: 30%;">{{ errors.password }}</div> 
+      {{/if}}
 
-          <button type='submit' class="btn btn-primary pull-right" role="button" >Submit</button>
-        </form>
-        {{#if referral_error.referral_error}}
-         <div class="alert alert-success" style="width: 30%;">{{ referral_error.referral_error }}</div>
-        {{/if}}
+      {{#if errors.email }}
+        <div class="alert alert-danger" style="width: 30%;">{{ errors.email }}</div>
+      {{/if}}
 
-        {{#if errors.password }}
-          <div class="alert alert-danger" style="width: 30%;">{{ errors.password }}</div> 
-        {{/if}}
+      {{#if errors.email_exists }}
+        <div class="alert alert-danger" style="width: 30%;">{{ errors.email_exists }}</div>
+      {{/if}}
 
-        {{#if errors.email }}
-          <div class="alert alert-danger" style="width: 30%;">{{ errors.email }}</div>
-        {{/if}}
 
-        {{#if errors.email_exists }}
-          <div class="alert alert-danger" style="width: 30%;">{{ errors.email_exists }}</div>
-        {{/if}}
+    {{ else}}
+
+      <form method="POST" action"register">
+        <input type='text' name='username' placeholder='Username' value="{{data.username}}"/><br><br>
+        <input type='text' name='email' placeholder='Email' value="{{data.email}}"/><br><br>
+        <input type='password' name='password' placeholder='Password' value="{{data.password}}"/><br><br>
+        <input type='text' name='referral' placeholder='Referral ID(Optional)' /><br><br>
+        <button type='submit' class="btn btn-primary pull-right" role="button" >Submit</button>
+      </form>
+
+      {{#if referral_error.referral_error}}
+        <div class="alert alert-success" style="width: 30%;">{{ referral_error.referral_error }}</div>
+      {{/if}}
+
+      {{#if errors.password }}
+        <div class="alert alert-danger" style="width: 30%;">{{ errors.password }}</div> 
+      {{/if}}
+
+      {{#if errors.email }}
+        <div class="alert alert-danger" style="width: 30%;">{{ errors.email }}</div>
+      {{/if}}
+
+      {{#if errors.email_exists }}
+        <div class="alert alert-danger" style="width: 30%;">{{ errors.email_exists }}</div>
+      {{/if}}
+
+    {{/if}}
+
     </div>
   </div>
 <center>
