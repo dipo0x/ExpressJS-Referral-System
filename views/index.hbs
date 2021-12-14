@@ -1,41 +1,5 @@
 <p>Welcome to NodeJS Refferal and Social Network Web App</p>
 
-
-
-{% for post in latest_post_list %}
-<center>
-<div class="paragraph" style="width: 80%; max-height:250px"> 
-    <div class="container">
-        <div class="card mb-8" >
-            <div class="card-body">
-                <h5 style="font-family: 'Baloo Tamma 2', sans-serif;" class="card-title">Post title</h5>
-
-                <p style="font-size: 15px"> post owner </b>  <span class="mx-2">&bullet;</span> <h8 style="color:  gray;">post pub_date</h8></p>
-                <h8 style='font-size: 15px' >Details: Some random infos</h8>
-                <div class="gangan">  
-                    <p class="card-text">76 words off the post[a slice]...</p> 
-                </div>
-
-                <p>
-                    <a href="/posts/<post_id>" style="
-                    width: 100px;
-                    background: green;
-                    height: 40px;
-                    color: white;
-                    border-radius: 0%;
-                    font-size: 14px;
-                    padding-top: 9px;
-                    border-color: forestgreen;
-                    margin: 12px 0;"   class="btn btn-primary">Read more &rarr;</a>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-</center>
- {% endfor %}
-
-
 {{#if success }}
 <div class="alert alert-success" style="width: 30%;">{{ success }}</div>
 {{/if}}

@@ -22,6 +22,9 @@ var userData= new mongoose.Schema({
 	following: {
 		type: String,
 	},
+	date :{
+		type: String,
+	}
 
 })
 

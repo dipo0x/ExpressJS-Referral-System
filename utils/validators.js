@@ -17,21 +17,3 @@ module.exports.signup = (email, password) => {
         valid: Object.keys(errors).length < 1
     }
 }
-
-module.exports.edit_post = (title, content) => {
-	const errors = {};
-	if (title===''){
-		errors["title"] = "Title cannot be blank";
-		}
-	if(content=== ''){
-		errors["content"] = "Content cannot be empty";	
-		}
-	if (title==='' && content === ''){
-		errors["both"] = "Your post is blank you wan upload am, who you one impress 😂😂😭😭😞😒";	
-		}
-    return{
-        errors,
-        valid: Object.keys(errors).length < 1
-    }
-}
-

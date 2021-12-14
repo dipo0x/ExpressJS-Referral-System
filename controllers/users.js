@@ -1,4 +1,3 @@
-const postData = require('../models/post')
 const bcrypt = require('bcrypt')
 const userData = require('../models/users')
 const { signup } = require('../utils/validators')
@@ -16,6 +15,10 @@ exports.login = function(req, res, next) {
     })(req, res, next);
 }
 
+exports.get_referral_register = function(req, res, next) {
+    res.render('user/register',{referral_id: req.params.id});
+}
+
 exports.get_register = function(req, res, next) {
     res.render('user/register');
 }
@@ -26,6 +29,7 @@ exports.register = async function(req, res, next) {
     const thePassword = req.body.password
     const theReferral = req.body.referral
     const newPassword = await bcrypt.hash(thePassword, 10)
+    const date = new Date().toTimeString().split(" ")[0];
     const { errors, valid } = signup(theEmail, thePassword);
     var referral_error = {}
 
@@ -36,10 +40,32 @@ exports.register = async function(req, res, next) {
             }
         }
     )
-
     if(!valid){
         rerender_register(req, res, errors, referral_error);
     }
+
+    if (req.params.id){
+        console.log(req.params.id)
+        userData.findOne({referralID : req.params.id}).then(user=>{
+            if(user){
+                const newNo = (Number(user.referralNO) + 1)
+                user.referralNO = newNo
+                user.save();
+                const newUser = new userData({
+                    username: theUsername,
+                    email: theEmail,
+                    password: newPassword,
+                    referralID:  Math.floor(Math.random() * 10000000),
+                    date: date
+                })
+                newUser.save().then(result=>{
+                    res.render('index', {success:"Account Creation Successful"})
+                })
+            }
+        }
+    )
+}
+    
     else{
         userData.findOne({referralID : theReferral}).then(user=>{
                 if(user){
@@ -51,6 +77,7 @@ exports.register = async function(req, res, next) {
                         email: theEmail,
                         password: newPassword,
                         referralID:  Math.floor(Math.random() * 10000000),
+                        date: date
                     })
                     newUser.save().then(result=>{
                         res.render('index', {success:"Account Creation Successful"})
@@ -61,6 +88,7 @@ exports.register = async function(req, res, next) {
                         email: theEmail,
                         password: newPassword,
                         referralID:  Math.floor(Math.random() * 10000000),
+                        date: date
                     })
                     newUser.save().then(result=>{
                         res.render('index', {success:"You have successfully created an account but user with that referral ID doesn't exist"});
@@ -77,16 +105,6 @@ const rerender_register = function(req, res, errors, referral_error) {
 
 exports.profile = function(req, res) {
     userData.findOne({username : req.user.username}).then(user=>{
-        postData.findOne({owner : user, archive:true}).then(post=>{
-    res.render('user/profile', {post: post, user: user});
-        })
-    })
-}
-
-exports.archive = function(req, res) {
-    userData.findOne({username : req.user.username}).then(user=>{
-        postData.findOne({owner : user, archive:false}).then(post=>{
-    res.render('user/archived-posts', {post: post, user: user});
-        })
-    })
-}
+    res.render('user/profile', {user: user});
+    }
+    )}

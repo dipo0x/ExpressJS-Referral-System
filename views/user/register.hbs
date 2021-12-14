@@ -6,7 +6,17 @@
           <input type='text' name='username' placeholder='Username' value="{{data.username}}"/><br><br>
           <input type='text' name='email' placeholder='Email' value="{{data.email}}"/><br><br>
           <input type='password' name='password' placeholder='Password' value="{{data.password}}"/><br><br>
+
+          {{#if referral_id}}
+
+           <p style="width: 220px; height: 70px; color:white; background: black; border-radius: 40px; display: flex; align-items: center; justify-content: center; padding: 0 70px;">
+             <h7 class="card-title">Referral ID: {{ referral_id }}</h7></p>
+          {{ else}}
+
           <input type='text' name='referral' placeholder='Referral ID(Optional)' /><br><br>
+
+           {{/if}}
+
           <button type='submit' class="btn btn-primary pull-right" role="button" >Submit</button>
         </form>
         {{#if referral_error.referral_error}}
