@@ -5,7 +5,6 @@ const passport = require('passport')
 const createError = require('http-errors');
 
 const rerender_register = function(req, res, errors, referral_error) {
-    console.log("My gee 111")
     res.render('user/register', {data: req.body, referral_error, errors});
 }
 
@@ -31,15 +30,22 @@ exports.get_register = function(req, res, next) {
 
 exports.register = async function(req, res, next) {
     const theUsername = req.body.username
-    const theEmail = req.body.email
     const thePassword = req.body.password
     const theReferral = req.body.referral
     const newPassword = await bcrypt.hash(thePassword, 10)
     const date = new Date().toTimeString().split(" ")[0];
-    const { errors, valid } = signup(theEmail, theUsername, thePassword);
+    const { errors, valid } = signup(theUsername, thePassword);
     var referral_error = {}
 
+    userData.findOne({username: username}).then(aUser=>{
+		if(aUser){
+			   errors["username_exists"] = "Username already in use"
+			    }
+			}
+		)
+
     if(!valid){
+        console.log(errors)
         rerender_register(req, res, errors, referral_error);
     }
     userData.findOne({referralID : theReferral}).then(user=>{
@@ -49,7 +55,6 @@ exports.register = async function(req, res, next) {
                 user.save();
                 const newUser = new userData({
                     username: theUsername,
-                    email: theEmail,
                     password: newPassword,
                     referralID:  Math.floor(Math.random() * 10000000),
                     date: date
@@ -61,7 +66,6 @@ exports.register = async function(req, res, next) {
             else{
                 let newUser = new userData({
                     username: theUsername,
-                    email: theEmail,
                     password: newPassword,
                     referralID:  Math.floor(Math.random() * 10000000),
                     date: date
@@ -83,13 +87,19 @@ exports.profile = function(req, res) {
 
 exports.referral_register = async function(req, res, next) {
     const theUsername = req.body.username
-    const theEmail = req.body.email
     const thePassword = req.body.password
     const newPassword = await bcrypt.hash(thePassword, 10)
     const date = new Date().toTimeString().split(" ")[0];
-    const { errors, valid } = signup(theEmail, theUsername, thePassword);
+    const { errors, valid } = signup(theUsername, thePassword);
     var referral_error = {}
-   
+    
+    userData.findOne({username: username}).then(aUser=>{
+		if(aUser){
+			   errors["username_exists"] = "Username already in use"
+			    }
+			}
+		)
+
     if(!valid){
         rerender_register(req, res, errors, referral_error);
     }
@@ -101,7 +111,6 @@ exports.referral_register = async function(req, res, next) {
             user.save();
             const newUser = new userData({
                 username: theUsername,
-                email: theEmail,
                 password: newPassword,
                 referralID:  Math.floor(Math.random() * 10000000),
                 date: date
@@ -113,7 +122,6 @@ exports.referral_register = async function(req, res, next) {
         else{
             let newUser = new userData({
                 username: theUsername,
-                email: theEmail,
                 password: newPassword,
                 referralID:  Math.floor(Math.random() * 10000000),
                 date: date
