@@ -1,0 +1,30 @@
+<center>
+  <div class="row">
+    <div class="col-md-12 col-md-offset-12">
+        <h1>SignUp</h1>
+        <form method="POST" action"register">
+          <input type='text' name='username' placeholder='Username' value="{{data.username}}"/><br><br>
+          <input type='text' name='email' placeholder='Email' value="{{data.email}}"/><br><br>
+          <input type='password' name='password' placeholder='Password' value="{{data.password}}"/><br><br>
+          <input type='text' name='referral' placeholder='Referral ID(Optional)' /><br><br>
+          <button type='submit' class="btn btn-primary pull-right" role="button" >Submit</button>
+        </form>
+        {{#if referral_error.referral_error}}
+         <div class="alert alert-success" style="width: 30%;">{{ referral_error.referral_error }}</div>
+        {{/if}}
+
+        {{#if errors.password }}
+          <div class="alert alert-danger" style="width: 30%;">{{ errors.password }}</div> 
+        {{/if}}
+
+        {{#if errors.email }}
+          <div class="alert alert-danger" style="width: 30%;">{{ errors.email }}</div>
+        {{/if}}
+
+        {{#if errors.email_exists }}
+          <div class="alert alert-danger" style="width: 30%;">{{ errors.email_exists }}</div>
+        {{/if}}
+    </div>
+  </div>
+<center>
+
