@@ -9,6 +9,6 @@ router.get('/register', usersRoutes.get_register)
 router.post('/register', usersRoutes.register)
 
 router.get('/register/rl:id', usersRoutes.get_referral_register)
-router.post('/register/rl:id', usersRoutes.register)
+router.post('/register/rl:id', usersRoutes.referral_register)
 
 module.exports = router;
