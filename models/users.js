@@ -13,10 +13,10 @@ var userData= new mongoose.Schema({
     referralNO: {
 		type: Number, default: 0
 	},
-	followers: {
+	referral: {
 		type: String,
 	},
-	following: {
+	referred: {
 		type: String,
 	},
 	date :{

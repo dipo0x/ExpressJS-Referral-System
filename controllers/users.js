@@ -1,10 +1,11 @@
 const bcrypt = require('bcrypt')
 const userData = require('../models/users')
-const { signup, username } = require('../utils/validators')
+const { signup } = require('../utils/validators')
 const passport = require('passport')
 const createError = require('http-errors');
 
 const rerender_register = function(req, res, errors, theErrors,referral_error) {
+    console.log(theErrors)
     res.render('user/register', {data: req.body, errors, theErrors, referral_error});
 }
 
@@ -35,40 +36,49 @@ exports.register = async function(req, res, next) {
     const newPassword = await bcrypt.hash(thePassword, 10)
     const date = new Date().toTimeString().split(" ")[0];
     const { errors, valid } = signup(theUsername, thePassword);
-    const { theErrors, theValid} = username(theUsername)
     var referral_error = {}
     
-    if(!theValid || !valid){
-        rerender_register(req, res, errors, theErrors, referral_error);
-    }
-    userData.findOne({referralID : theReferral}).then(user=>{
-            if(user){
-                const newNo = (Number(user.referralNO) + 1)
-                user.referralNO = newNo
-                user.save();
-                const newUser = new userData({
-                    username: theUsername,
-                    password: newPassword,
-                    referralID:  Math.floor(Math.random() * 10000000),
-                    date: date
-                })
-                newUser.save().then(result=>{
-                    res.render('index', {success:"Account Creation Successful"})
-                })
-            }
-            else{
-                let newUser = new userData({
-                    username: theUsername,
-                    password: newPassword,
-                    referralID:  Math.floor(Math.random() * 10000000),
-                    date: date
-                })
-                newUser.save().then(result=>{
-                    res.render('index', {success:"You have successfully created an account but user with that referral ID doesn't exist"});
-                })  
-            }
+    userData.findOne({username: theUsername}).then(user=>{
+		const theErrors = {};
+        if(user !== null){
+            theErrors["username_exists"] = "Username already in use"
+            rerender_register(req, res, theErrors);
         }
-    )
+        else{
+            if(!valid){
+                rerender_register(req, res, errors, referral_error);
+            }
+            userData.findOne({referralID : theReferral}).then(user=>{
+                    if(user){
+                        const newNo = (Number(user.referralNO) + 1)
+                        user.referralNO = newNo
+                        user.save();
+                        const newUser = new userData({
+                            username: theUsername,
+                            password: newPassword,
+                            referralID:  Math.floor(Math.random() * 10000000),
+                            date: date,
+                            referred: theReferral
+                        })
+                        newUser.save().then(result=>{
+                            res.render('index', {success:"Account Creation Successful"})
+                        })
+                    }
+                    else{
+                        let newUser = new userData({
+                            username: theUsername,
+                            password: newPassword,
+                            referralID:  Math.floor(Math.random() * 10000000),
+                            date: date
+                        })
+                        newUser.save().then(result=>{
+                            res.render('index', {success:"You have successfully created an account but user with that referral ID doesn't exist"});
+                        })  
+                    }
+                }
+            )
+        }
+	})
 }
 
 exports.profile = function(req, res) {
@@ -82,52 +92,61 @@ exports.profile = function(req, res) {
     res.render('user/profile');
 }
 
-        
+exports.referral = function(req, res) {
+    userData.find({referred : req.user.referralID}).then(user=>{
+    res.render('user/referral', {user:user});
+})}
+
 exports.referral_register = async function(req, res, next) {
     const theUsername = req.body.username
     const thePassword = req.body.password
     const newPassword = await bcrypt.hash(thePassword, 10)
     const date = new Date().toTimeString().split(" ")[0];
+    const referred = req.params.id
     const { errors, valid } = signup(theUsername, thePassword);
     var referral_error = {}
     
-    userData.findOne({username: theUsername}).then(aUser=>{
-		if(aUser){
-			   errors["username_exists"] = "Username already in use"
-			    }
-			}
-		)
-
-    if(!valid){
-        rerender_register(req, res, errors, referral_error);
-    }
-
-    userData.findOne({referralID : req.params.id}).then(user=>{
-        if(user){
-            const newNo = (Number(user.referralNO) + 1)
-            user.referralNO = newNo
-            user.save();
-            const newUser = new userData({
-                username: theUsername,
-                password: newPassword,
-                referralID:  Math.floor(Math.random() * 10000000),
-                date: date
-            })
-            newUser.save().then(result=>{
-                res.render('index', {success:"Account Creation Successful"})
-            })
+    userData.findOne({username: theUsername}).then(user=>{
+		const theErrors = {};
+        if(user !== null){
+            theErrors["username_exists"] = "Username already in use"
+            rerender_register(req, res, theErrors);
+        
         }
         else{
-            let newUser = new userData({
-                username: theUsername,
-                password: newPassword,
-                referralID:  Math.floor(Math.random() * 10000000),
-                date: date
-            })
-            newUser.save().then(result=>{
-                res.render('index', {success:"You have successfully created an account but user with that referral ID doesn't exist"});
+            if(!valid){
+                rerender_register(req, res, errors, referral_error);
             }
-            )
-        }
-    })
-}
+        
+            userData.findOne({referralID : req.params.id}).then(user=>{
+                if(user){
+                    const newNo = (Number(user.referralNO) + 1)
+                    user.referralNO = newNo
+                    user.save();
+                    const newUser = new userData({
+                        username: theUsername,
+                        password: newPassword,
+                        referralID:  Math.floor(Math.random() * 10000000),
+                        date: date,
+                        referred: referred
+                    })
+                    newUser.save().then(result=>{
+                        res.render('index', {success:"Account Creation Successful"})
+                    })
+                }
+                else{
+                    let newUser = new userData({
+                        username: theUsername,
+                        password: newPassword,
+                        referralID:  Math.floor(Math.random() * 10000000),
+                        date: date,
+                    })
+                    newUser.save().then(result=>{
+                        res.render('index', {success:"You have successfully created an account but user with that referral ID doesn't exist"});
+                        }
+                    )
+                }
+            }
+        )
+    }}
+)}

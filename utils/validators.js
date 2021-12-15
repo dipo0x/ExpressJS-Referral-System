@@ -18,15 +18,3 @@ module.exports.signup = (username, password) => {
         valid: Object.keys(errors).length < 1
     }
 }
-
-module.exports.username = (username) =>{
-	const theErrors = {};
-	var user = userData.findOne({username: username})
-        if(user !== null){
-            theErrors["username_exists"] = "Username already in use"
-        }
-		return {
-			theErrors, 
-			theValid: Object.keys(theErrors).length < 1
-		}
-}
