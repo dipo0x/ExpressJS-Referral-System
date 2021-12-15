@@ -1,4 +1,4 @@
-<title>
+{{!-- <title>
   {{ user}}'s profile
 </title>
 
@@ -6,12 +6,31 @@
 
 <div style=" text-align: center; position: absolute;"  class="container">
   <div class='txt'>
-    <h3 style="color: white">{{ user.username }}</h3> | <small style="color: white" >{{ Your email }}</small>
-    <h4 style="color: white">{{ user.profile.name }}</h4>
+    <h3 >{{ user.username }}</h3> 
+     <small  >Your email</small>
+    <h4 >First and Last Name</h4>
   </div>    
-  <h3 style="color: white">Profile Info:</h3>
-  <p style="color: white" >Age | {{ user.referralID}}</p>
-  <p style="color: white" >Phone Number | {{user.referralNO}}</p>
-  <p style="color: white" >Country | {{ user.followers }}</p>
-  <p style="color: white" >Coins | {{ user.following }}</p></h5>   
+  <h3 >Profile Info:</h3>
+  <p  >Age | {{ user.referralID}}</p>
+  <p  >Phone Number | {{user.referralNO}}</p>
+  <p  >Country | {{ user.followers }}</p>
+  <p  >Coins | {{ user.following }}</p></h5>   
+</div> --}}
+
+<title>
+  Dipo's profile
+</title>
+
+<link rel='stylesheet' href='/public/stylesheets/profile.css' />
+
+<div style=" text-align: center; position: absolute;"  class="container">
+  <div class='txt'>
+    <h3 >dipo</h3>  <small  >Your email</small>
+    <h4 >First and Last Name</h4>
+  </div>    
+  <h3 >Profile Info:</h3>
+  <p  >Age | 15</p>
+  <p  >Phone Number | 08147103054</p>
+  <p  >Followers | {{ user.followers }} 6</p>
+  <p  >Following | {{ user.following }} 5</p></h5>   
 </div>

@@ -4,7 +4,7 @@ const validator = require('validator');
 module.exports.signup = (username, password) => {
 	const errors = {};
 	if (username === ''){
-		errors["username"] = "Your username is blank you wan create account, who you one impress 😂😂😭😭😞😒";
+		errors["username"] = "Your username is blank you wan create account, who you one impress 😂😂😭😭😒";
 		}
 	if(!validator.isAscii(password)){
 		errors["password"] = "Not a valid password";	
@@ -17,4 +17,16 @@ module.exports.signup = (username, password) => {
         errors,
         valid: Object.keys(errors).length < 1
     }
+}
+
+module.exports.username = (username) =>{
+	const theErrors = {};
+	var user = userData.findOne({username: username})
+        if(user !== null){
+            theErrors["username_exists"] = "Username already in use"
+        }
+		return {
+			theErrors, 
+			theValid: Object.keys(theErrors).length < 1
+		}
 }

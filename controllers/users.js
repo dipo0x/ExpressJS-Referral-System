@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt')
 const userData = require('../models/users')
-const { signup } = require('../utils/validators')
+const { signup, username } = require('../utils/validators')
 const passport = require('passport')
 const createError = require('http-errors');
 
-const rerender_register = function(req, res, errors, referral_error) {
-    res.render('user/register', {data: req.body, referral_error, errors});
+const rerender_register = function(req, res, errors, theErrors,referral_error) {
+    res.render('user/register', {data: req.body, errors, theErrors, referral_error});
 }
 
 exports.get_login = function(req, res) {
@@ -35,18 +35,11 @@ exports.register = async function(req, res, next) {
     const newPassword = await bcrypt.hash(thePassword, 10)
     const date = new Date().toTimeString().split(" ")[0];
     const { errors, valid } = signup(theUsername, thePassword);
+    const { theErrors, theValid} = username(theUsername)
     var referral_error = {}
-
-    userData.findOne({username: theUsername}).then(aUser=>{
-		if(aUser){
-			   errors["username_exists"] = "Username already in use"
-			    }
-			}
-		)
-
-    if(!valid){
-        console.log(errors)
-        rerender_register(req, res, errors, referral_error);
+    
+    if(!theValid || !valid){
+        rerender_register(req, res, errors, theErrors, referral_error);
     }
     userData.findOne({referralID : theReferral}).then(user=>{
             if(user){
@@ -85,6 +78,11 @@ exports.profile = function(req, res) {
     )}
 
 
+exports.profile = function(req, res) {
+    res.render('user/profile');
+}
+
+        
 exports.referral_register = async function(req, res, next) {
     const theUsername = req.body.username
     const thePassword = req.body.password

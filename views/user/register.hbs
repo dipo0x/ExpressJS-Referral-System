@@ -21,8 +21,12 @@
         <div class="alert alert-danger" style="width: 30%;">{{ errors.password }}</div> 
       {{/if}}
 
-      {{#if errors.username_exists }}
-        <div class="alert alert-danger" style="width: 30%;">{{ errors.username_exists }}</div>
+      {{#if theErrors.username_exists }}
+        <div class="alert alert-danger" style="width: 30%;">{{ theErrors.username_exists }}</div>
+      {{/if}}
+
+      {{#if errors.username }}
+        <div class="alert alert-danger" style="width: 30%;">{{ errors.username }}</div>
       {{/if}}
 
     {{ else}}
@@ -42,8 +46,12 @@
         <div class="alert alert-danger" style="width: 30%;">{{ errors.password }}</div> 
       {{/if}}
 
-      {{#if errors.username_exists }}
-        <div class="alert alert-danger" style="width: 30%;">{{ errors.username_exists }}</div>
+      {{#if theErrors.username_exists }}
+        <div class="alert alert-danger" style="width: 30%;">{{ theErrors.username_exists }}</div>
+      {{/if}}
+
+      {{#if errors.username }}
+        <div class="alert alert-danger" style="width: 30%;">{{ errors.username }}</div>
       {{/if}}
 
     {{/if}}
