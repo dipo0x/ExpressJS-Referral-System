@@ -37,7 +37,7 @@ exports.register = async function(req, res, next) {
     const { errors, valid } = signup(theUsername, thePassword);
     var referral_error = {}
 
-    userData.findOne({username: username}).then(aUser=>{
+    userData.findOne({username: theUsername}).then(aUser=>{
 		if(aUser){
 			   errors["username_exists"] = "Username already in use"
 			    }
@@ -93,7 +93,7 @@ exports.referral_register = async function(req, res, next) {
     const { errors, valid } = signup(theUsername, thePassword);
     var referral_error = {}
     
-    userData.findOne({username: username}).then(aUser=>{
+    userData.findOne({username: theUsername}).then(aUser=>{
 		if(aUser){
 			   errors["username_exists"] = "Username already in use"
 			    }
