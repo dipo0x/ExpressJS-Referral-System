@@ -3,9 +3,13 @@ const userData = require('../models/users')
 const { signup } = require('../utils/validators')
 const passport = require('passport')
 
-const rerender_register = function(req, res, errors, theErrors,referral_error) {
-    console.log(theErrors)
-    res.render('user/register', {data: req.body, errors, theErrors, referral_error});
+const rerender_register = function(req, res, errors,referral_error) {
+    console.log()
+    res.render('user/register', {data: req.body, errors, referral_error});
+}
+
+const email_view = function(req, res, theErrors) {
+    res.render('user/register', {data: req.body, theErrors});
 }
 
 exports.get_login = function(req, res) {
@@ -41,7 +45,7 @@ exports.register = async function(req, res, next) {
 		const theErrors = {};
         if(user !== null){
             theErrors["username_exists"] = "Username already in use"
-            rerender_register(req, res, theErrors);
+            email_view(req, res, theErrors);
         }
         else{
             if(!valid){
@@ -92,7 +96,7 @@ exports.referred = function(req, res) {
 })}
 
 exports.user_profile = function(req, res) {
-    userData.findOne({id : req.params.id}).then(user=>{
+    userData.findOne({username : req.params.id}).then(user=>{
     res.render('user/user_profile', {user:user});
 })}
 
@@ -109,7 +113,7 @@ exports.referral_register = async function(req, res, next) {
 		const theErrors = {};
         if(user !== null){
             theErrors["username_exists"] = "Username already in use"
-            rerender_register(req, res, theErrors);
+            email_view(req, res, theErrors);
         
         }
         else{
