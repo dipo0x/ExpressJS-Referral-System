@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt')
 const userData = require('../models/users')
 const { signup } = require('../utils/validators')
 const passport = require('passport')
-const createError = require('http-errors');
 
 const rerender_register = function(req, res, errors, theErrors,referral_error) {
     console.log(theErrors)
@@ -85,12 +84,16 @@ exports.profile = function(req, res) {
     userData.findOne({username : req.user.username}).then(user=>{
     res.render('user/profile', {user: user});
     }
-    )}
-
+)}
 
 exports.referred = function(req, res) {
     userData.find({referred : req.user.referralID}).then(user=>{
     res.render('user/referred', {user:user});
+})}
+
+exports.user_profile = function(req, res) {
+    userData.findOne({id : req.params.id}).then(user=>{
+    res.render('user/user_profile', {user:user});
 })}
 
 exports.referral_register = async function(req, res, next) {
@@ -146,3 +149,9 @@ exports.referral_register = async function(req, res, next) {
         )
     }}
 )}
+
+exports.logout = function(req, res, next) {
+    req.logout();
+    req.session.destroy();
+    res.redirect('/')
+}

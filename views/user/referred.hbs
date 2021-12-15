@@ -15,10 +15,10 @@
     <tbody>
          {{#each user}}
         <tr>
-            <td> {{user.username}} - {{@key}}</td>
-            <td> {{user.date}} </td>
+            <td> {{this.username}}</td>
+            <td> {{this.date}} </td>
             <td>
-                <a href="/profile/{{ user.id }}">User's profile</a>
+                <a href="/profile/rl{{ this.id }}">User's profile</a>
             </td>
         </tr>
           {{/each}}
