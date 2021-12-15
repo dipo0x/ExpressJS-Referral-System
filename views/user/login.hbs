@@ -5,7 +5,7 @@
 		{{#if error }}
 			<div class="alert alert-success" style="width: 30%;">{{ error }}</div>
 		{{/if}}
-		<form method="POST" action="login" autocomplete="off">
+		<form method="POST" action="login">
 			<input type='text' name='username' placeholder='username' value="{{username}}"/><br><br>
 			<input type='password' name='password' placeholder='Password' value="{{password}}"/><br><br>
 			<button type='submit' class="btn btn-primary pull-right" role="button" >Submit</button>

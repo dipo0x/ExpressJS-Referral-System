@@ -1,2 +1,2 @@
 #Referral and Blogging Web App 
-This only contributor to this is Oladipo Adesiyan
+You can coontribute to this alongside with Oladipo Adesiyan

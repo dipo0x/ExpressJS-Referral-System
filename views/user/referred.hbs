@@ -1,0 +1,26 @@
+<title>
+  Those yve referred
+</title>
+
+{{ user.username }}
+
+<table class="table table-hover table-light">
+    <thead>
+        <tr class="uppercase">
+            <th class="col-md-2"> Username </th>
+            <th class="col-md-6"> Time of Registration </th>
+            <th class="col-md-2"> Link to user profile </th>
+        </tr>
+    </thead>
+    <tbody>
+         {{#each user}}
+        <tr>
+            <td> {{user.username}} - {{@key}}</td>
+            <td> {{user.date}} </td>
+            <td>
+                <a href="/profile/{{ user.id }}">User's profile</a>
+            </td>
+        </tr>
+          {{/each}}
+    </tbody>
+</table>

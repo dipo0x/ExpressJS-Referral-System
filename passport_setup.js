@@ -25,7 +25,7 @@ module.exports = function(passport){
     },
     function(req, username, password, done){
         return userData.findOne({ username: username}).then(user=>{
-            if (user.length==0){
+            if (user==null){
                 req.flash('message', 'Incorrect username')
                 return done(null, false)
             }
@@ -42,5 +42,4 @@ module.exports = function(passport){
             done(err, false)
         })
     }))
-}    
-
+}

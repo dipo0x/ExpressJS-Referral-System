@@ -88,13 +88,9 @@ exports.profile = function(req, res) {
     )}
 
 
-exports.profile = function(req, res) {
-    res.render('user/profile');
-}
-
-exports.referral = function(req, res) {
+exports.referred = function(req, res) {
     userData.find({referred : req.user.referralID}).then(user=>{
-    res.render('user/referral', {user:user});
+    res.render('user/referred', {user:user});
 })}
 
 exports.referral_register = async function(req, res, next) {
