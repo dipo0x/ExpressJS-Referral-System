@@ -12,7 +12,6 @@ module.exports.signup = (username, password) => {
 	if(!validator.isLength(password, {min:4, max: 12})){
 		errors["password"] = "Password ensure that your password has a minimum of 4 char and maximum of 12 char";	
 	}
-
     return{
         errors,
         valid: Object.keys(errors).length < 1

@@ -4,7 +4,6 @@ const { signup } = require('../utils/validators')
 const passport = require('passport')
 
 const rerender_register = function(req, res, errors,referral_error) {
-    console.log()
     res.render('user/register', {data: req.body, errors, referral_error});
 }
 
@@ -114,7 +113,6 @@ exports.referral_register = async function(req, res, next) {
         if(user !== null){
             theErrors["username_exists"] = "Username already in use"
             email_view(req, res, theErrors);
-        
         }
         else{
             if(!valid){

@@ -2,16 +2,13 @@
     <title>Login Page</title>
 	<div class="container">
 		<h1>Login</h1>
-		{{#if error }}
-			<div class="alert alert-success" style="width: 30%;">{{ error }}</div>
-		{{/if}}
 		<form method="POST" action="login">
 			<input type='text' name='username' placeholder='username' value="{{username}}"/><br><br>
 			<input type='password' name='password' placeholder='Password' value="{{password}}"/><br><br>
 			<button type='submit' class="btn btn-primary pull-right" role="button" >Submit</button>
 		</form>
-		{{#if errors }}
-          <div class="alert alert-danger" style="width: 30%;">{{ errors }}</div> 
+		{{#if error }}
+          <div class="alert alert-danger" style="width: 30%;">{{ error }}</div> 
         {{/if}}
 		
 	</div>
