@@ -108,6 +108,7 @@ exports.referral_register = async function(req, res, next) {
     const date = new Date().toTimeString().split(" ")[0];
     const referred = req.params.id
     const { errors, valid } = signup(theUsername, thePassword);
+    const { referralIDError, referralValid} = luhnAlgo(theReferral);
     
     userData.findOne({username: theUsername}).then(user=>{
 		const theErrors = {};
@@ -116,9 +117,9 @@ exports.referral_register = async function(req, res, next) {
             email_view(req, res, theErrors);
         }
         else{
-            if(!valid){
-                rerender_register(req, res, errors);
-            }   
+            if(!valid || !referralValid){
+                rerender_register(req, res, errors, referralIDError);
+            }
             userData.findOne({referralID : req.params.id}).then(user=>{
                 if(user){
                     const newNo = (Number(user.referralNO) + 1)
