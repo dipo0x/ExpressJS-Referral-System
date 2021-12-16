@@ -17,3 +17,15 @@ module.exports.signup = (username, password) => {
         valid: Object.keys(errors).length < 1
     }
 }
+
+
+module.exports.luhnAlgo  = num => {
+	const referralIDError = {};
+	if(num % 2 != 0){
+		referralIDError["luhnAlgo"] = "Not a valid Referral ID";	
+	}
+	return{
+        referralIDError,
+        referralValid: Object.keys(referralIDError).length < 1
+    }
+  };

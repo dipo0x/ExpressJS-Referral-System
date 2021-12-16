@@ -1,10 +1,11 @@
 const bcrypt = require('bcrypt')
 const userData = require('../models/users')
-const { signup } = require('../utils/validators')
+const { signup, luhnAlgo } = require('../utils/validators')
+const numberGenerator = require('../utils/generator')
 const passport = require('passport')
 
-const rerender_register = function(req, res, errors,referral_error) {
-    res.render('user/register', {data: req.body, errors, referral_error});
+const rerender_register = function(req, res, errors, referralIDError) {
+    res.render('user/register', {data: req.body, errors, referralIDError});
 }
 
 const email_view = function(req, res, theErrors) {
@@ -37,8 +38,9 @@ exports.register = async function(req, res, next) {
     const theReferral = req.body.referral
     const newPassword = await bcrypt.hash(thePassword, 10)
     const date = new Date().toTimeString().split(" ")[0];
+    
+    const { referralIDError, referralValid} = luhnAlgo(theReferral);
     const { errors, valid } = signup(theUsername, thePassword);
-    var referral_error = {}
     
     userData.findOne({username: theUsername}).then(user=>{
 		const theErrors = {};
@@ -47,8 +49,8 @@ exports.register = async function(req, res, next) {
             email_view(req, res, theErrors);
         }
         else{
-            if(!valid){
-                rerender_register(req, res, errors, referral_error);
+            if(!valid || !referralValid){
+                rerender_register(req, res, errors, referralIDError);
             }
             userData.findOne({referralID : theReferral}).then(user=>{
                     if(user){
@@ -58,7 +60,7 @@ exports.register = async function(req, res, next) {
                         const newUser = new userData({
                             username: theUsername,
                             password: newPassword,
-                            referralID:  Math.floor(Math.random() * 10000000),
+                            referralID:  numberGenerator(),
                             date: date,
                             referred: theReferral
                         })
@@ -106,7 +108,6 @@ exports.referral_register = async function(req, res, next) {
     const date = new Date().toTimeString().split(" ")[0];
     const referred = req.params.id
     const { errors, valid } = signup(theUsername, thePassword);
-    var referral_error = {}
     
     userData.findOne({username: theUsername}).then(user=>{
 		const theErrors = {};
@@ -116,7 +117,7 @@ exports.referral_register = async function(req, res, next) {
         }
         else{
             if(!valid){
-                rerender_register(req, res, errors, referral_error);
+                rerender_register(req, res, errors);
             }   
             userData.findOne({referralID : req.params.id}).then(user=>{
                 if(user){
@@ -126,7 +127,7 @@ exports.referral_register = async function(req, res, next) {
                     const newUser = new userData({
                         username: theUsername,
                         password: newPassword,
-                        referralID:  Math.floor(Math.random() * 10000000),
+                        referralID:  numberGenerator(),
                         date: date,
                         referred: referred
                     })

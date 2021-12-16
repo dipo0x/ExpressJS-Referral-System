@@ -13,8 +13,8 @@
         <button type='submit' class="btn btn-primary pull-right" role="button" >Submit</button>
       </form>
 
-      {{#if referral_error.referral_error}}
-        <div class="alert alert-success" style="width: 30%;">{{ referral_error.referral_error }}</div>
+      {{#if referralIDError.luhnAlgo}}
+        <div class="alert alert-danger" style="width: 30%;">{{ referralIDError.luhnAlgo }}</div>
       {{/if}}
 
       {{#if errors.password }}
@@ -38,8 +38,8 @@
         <button type='submit' class="btn btn-primary pull-right" role="button" >Submit</button>
       </form>
 
-      {{#if referral_error.referral_error}}
-        <div class="alert alert-success" style="width: 30%;">{{ referral_error.referral_error }}</div>
+      {{#if referralIDError.luhnAlgo}}
+        <div class="alert alert-danger" style="width: 30%;">{{ referralIDError.luhnAlgo }}</div>
       {{/if}}
 
       {{#if errors.password }}
