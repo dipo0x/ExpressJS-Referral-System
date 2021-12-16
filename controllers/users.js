@@ -117,8 +117,7 @@ exports.referral_register = async function(req, res, next) {
         else{
             if(!valid){
                 rerender_register(req, res, errors, referral_error);
-            }
-        
+            }   
             userData.findOne({referralID : req.params.id}).then(user=>{
                 if(user){
                     const newNo = (Number(user.referralNO) + 1)
