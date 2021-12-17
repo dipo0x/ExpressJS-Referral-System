@@ -1,4 +1,3 @@
-const userData = require('../models/users')
 const validator = require('validator');
 
 module.exports.signup = (username, password) => {
