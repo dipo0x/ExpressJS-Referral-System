@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 
 var userData= new mongoose.Schema({
 	username: {
@@ -30,3 +31,11 @@ var userData= new mongoose.Schema({
 })
 
 module.exports = mongoose.model('User', userData)
+
+
+module.exports.comparePassword = (candidatePassword, hash, callback)=>{
+	bcrypt.compare(candidatePassword, hash, (err, isMatch)=>{
+		if(err) return callback(err)
+		callback(null, isMatch)
+	})
+}

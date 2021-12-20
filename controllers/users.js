@@ -26,10 +26,10 @@ passport.use(new LocalStrategy(
       if (!user) { 
       	return done(null, false); 
       }
-      console.log(err)
       userData.comparePassword(password, user.password, (err, isMatch)=>{
 		if(err) throw err
 		if(isMatch){
+            console.log(user)
 			return done(null, user)
 		}else{
 			return done(null, false, {message: 'Invalid Password'})
