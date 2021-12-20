@@ -3,6 +3,42 @@ const userData = require('../models/users')
 const { signup, luhnAlgo } = require('../utils/validators')
 const numberGenerator = require('../utils/generator')
 const passport = require('passport')
+let LocalStrategy = require('passport-local').Strategy;
+
+passport.serializeUser(function(user, done){
+	done(null, user.id)
+})
+
+passport.deserializeUser(function(id, done){
+	User.findById(id, function(err, user){
+		done(err, user)
+	})
+})
+
+
+//Local strategy
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    userData.findOne({ username: username}, function (err, user) {
+      if (err) { 
+          return done(err); 
+        }
+      if (!user) { 
+      	return done(null, false); 
+      }
+      console.log(err)
+      userData.comparePassword(password, user.password, (err, isMatch)=>{
+		if(err) throw err
+		if(isMatch){
+			return done(null, user)
+		}else{
+			return done(null, false, {message: 'Invalid Password'})
+		}
+	})
+    });
+  }
+));
+
 
 const rerender_register = function(req, res, errors, referralIDError) {
     res.render('user/register', {data: req.body, errors, referralIDError});

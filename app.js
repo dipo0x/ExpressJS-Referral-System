@@ -8,7 +8,6 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 const passport = require('passport');
-require('./passport_setup')(passport);
 const session = require('express-session');
 let flash = require('connect-flash');
 
