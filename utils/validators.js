@@ -17,7 +17,6 @@ module.exports.signup = (username, password) => {
     }
 }
 
-
 module.exports.luhnAlgo  = num => {
 	const referralIDError = {};
 	if(num % 2 != 0){
